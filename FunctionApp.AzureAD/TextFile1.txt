@@ -4,4 +4,3 @@
     -PrincipalId $managedIdentityObjectId `
     -ResourceId $serverServicePrincipalObjectId
 
-    az rest -m POST -u https://graph.microsoft.com/v1.0/servicePrincipals/$oidForMI/appRoleAssignments -b "{\"principalId\": \"$oidForMI\", \"resourceId\": \"$serverSPOID\",\"appRoleId\": \"$roleguid\"}

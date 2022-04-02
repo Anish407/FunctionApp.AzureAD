@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using FunctionApp.AzureAD;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.Extensions.Configuration;
@@ -7,8 +8,10 @@ using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using System.Threading.Tasks;
 
+[assembly: FunctionsStartup(typeof(Startup))]
 namespace FunctionApp.AzureAD
 {
+    
     public class Startup : FunctionsStartup
     {
         public Startup()
@@ -38,17 +41,17 @@ namespace FunctionApp.AzureAD
             // Replace the Azure Function configuration with our new one
             builder.Services.AddSingleton(Configuration);
 
-            ConfigureServices(builder.Services);
-        }
-
-        private void ConfigureServices(IServiceCollection services)
-        {
-            services.AddAuthentication(sharedOptions =>
+            // to call downstream apis, create a secret and add the enabletokenaquisition extensions
+            builder.Services.AddAuthentication(sharedOptions =>
             {
                 sharedOptions.DefaultScheme = Microsoft.Identity.Web.Constants.Bearer;
                 sharedOptions.DefaultChallengeScheme = Microsoft.Identity.Web.Constants.Bearer;
+
             })
-                .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
+            .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
+
         }
+
+       
     }
 }

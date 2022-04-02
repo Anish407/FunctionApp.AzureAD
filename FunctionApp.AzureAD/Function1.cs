@@ -25,7 +25,7 @@ namespace FunctionApp.AzureAD
         //https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/how-to-assign-app-role-managed-identity-powershell -- assign app role
         [FunctionName("Function1")]
         public  async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
